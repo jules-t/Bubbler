@@ -1,0 +1,12 @@
+dlt[duckdb]>=1.18.2
+openai>=1.0.0
+weaviate-client>=3.25.0
+elevenlabs>=0.2.0
+python-dotenv>=1.0.0
+streamlit>=1.28.0
+pandas>=1.5.0
+pytrends>=4.9.0
+feedparser>=6.0.10
+yfinance>=0.2.40
+fredapi>=0.5.0
+requests>=2.31.0
