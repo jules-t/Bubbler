@@ -15,3 +15,5 @@ _local
 # ignore duckdb
 *.duckdb
 *.wal
+
+files_read/

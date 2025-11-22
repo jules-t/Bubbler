@@ -1,0 +1,82 @@
+{
+  "timestamp": "2025-11-22T15:19:51.046909Z",
+  "overall_bubble_score": 67.6,
+  "bubble_state": "HIGH_RISK",
+  "confidence": 0.93,
+  "metrics": {
+    "valuation": {
+      "score": 46.7,
+      "state": "FAIR_VALUE",
+      "indicators": {
+        "price_level_pct": 0.6,
+        "forward_pe_mean": 26.218,
+        "forward_pe_pctl": 0.4,
+        "pe_ratio_mean": 32.982,
+        "pe_ratio_pctl": 0.6,
+        "high_valuations_count": 9,
+        "valuation_mentions": 3,
+        "sentiment_skew": 0.4673913043478261
+      },
+      "weight": 0.25
+    },
+    "sentiment": {
+      "score": 94.2,
+      "state": "PEAK_EUPHORIA",
+      "indicators": {
+        "trends_latest": 25.5,
+        "trends_z": 3.080364593264043,
+        "peak_hype_ratio": 0.347682119205298,
+        "warning_ratio": 0.1291390728476821,
+        "total_articles": 302,
+        "vader_compound_avg": 0.7717344827586206
+      },
+      "weight": 0.2
+    },
+    "positioning": {
+      "score": 68.9,
+      "state": "CROWDED",
+      "indicators": {
+        "avg_volatility": 0.022746245644488728,
+        "crowding_level": "MODERATE",
+        "retail_interest": "ELEVATED",
+        "institutional_flows": "POSITIVE"
+      },
+      "weight": 0.15
+    },
+    "liquidity": {
+      "score": 59.6,
+      "state": "TIGHTENING",
+      "indicators": {
+        "real_yield_10y_latest": 1.86,
+        "real_yield_10y_z": -0.4505171562567735,
+        "m2_latest": 22212.5,
+        "m2_z": 2.022875190338511,
+        "hy_oas_latest": 3.17,
+        "hy_oas_z": 0.34003735765074766,
+        "funding_trend": "STABLE",
+        "rate_environment": "RESTRICTIVE",
+        "funding_decline_mentions": 0
+      },
+      "weight": 0.2
+    },
+    "capex": {
+      "score": 74.0,
+      "state": "ELEVATED",
+      "indicators": {
+        "spending_mentions": 8,
+        "spending_trend": "ACCELERATING",
+        "roi_concern": "HIGH"
+      },
+      "weight": 0.2
+    }
+  },
+  "warning_signals": [
+    "Sentiment at peak euphoria - contrarian indicator"
+  ],
+  "historical_comparison": {
+    "dotcom_2000": 0.79,
+    "crypto_2022": 0.87,
+    "housing_2008": 0.94,
+    "comparison": "LESS_EXTREME"
+  }
+}
