@@ -1,4 +1,5 @@
 {
+  "bubble_id": "market",
   "metrics": {
     "category1_valuation": {
       "nasdaq_100_forward_pe": 28.5,

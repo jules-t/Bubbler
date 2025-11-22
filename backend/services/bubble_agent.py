@@ -1,29 +1,36 @@
 from models.schemas import MetricsData, BubbleState, BubbleRiskLevel
+from typing import Dict
 
 
 class BubbleAgent:
     """Core bubble agent that calculates risk and determines personality"""
 
     def __init__(self):
-        self.current_metrics: MetricsData | None = None
-        self.current_state: BubbleState | None = None
+        # Store multiple bubbles by bubble_id
+        self.bubbles: Dict[str, dict] = {}
+        # Each bubble stores: {"metrics": MetricsData, "state": BubbleState}
 
-    def initialize_with_metrics(self, metrics: MetricsData) -> BubbleState:
-        """Initialize the agent with economic metrics and calculate bubble state"""
-        self.current_metrics = metrics
+    def initialize_with_metrics(self, bubble_id: str, metrics: MetricsData) -> BubbleState:
+        """Initialize a specific bubble with economic metrics and calculate bubble state"""
         risk_score = self._calculate_risk_score(metrics)
         risk_level = self._determine_risk_level(risk_score)
         personality = self._generate_personality_description(risk_score, risk_level)
         summary = self._generate_metrics_summary(metrics)
 
-        self.current_state = BubbleState(
+        bubble_state = BubbleState(
             risk_score=risk_score,
             risk_level=risk_level,
             personality_description=personality,
             metrics_summary=summary
         )
 
-        return self.current_state
+        # Store this bubble's data
+        self.bubbles[bubble_id] = {
+            "metrics": metrics,
+            "state": bubble_state
+        }
+
+        return bubble_state
 
     def _calculate_risk_score(self, metrics: MetricsData) -> float:
         """
@@ -118,13 +125,19 @@ class BubbleAgent:
             f"Enterprise adoption {cat5.enterprise_ai_adoption:.1f}%."
         )
 
-    def get_current_state(self) -> BubbleState | None:
-        """Get the current bubble state"""
-        return self.current_state
+    def get_bubble_state(self, bubble_id: str) -> BubbleState | None:
+        """Get the state of a specific bubble"""
+        if bubble_id in self.bubbles:
+            return self.bubbles[bubble_id]["state"]
+        return None
 
-    def is_initialized(self) -> bool:
-        """Check if agent has been initialized with metrics"""
-        return self.current_state is not None
+    def is_bubble_initialized(self, bubble_id: str) -> bool:
+        """Check if a specific bubble has been initialized with metrics"""
+        return bubble_id in self.bubbles
+
+    def get_all_bubble_ids(self) -> list[str]:
+        """Get list of all initialized bubble IDs"""
+        return list(self.bubbles.keys())
 
 
 # Global agent instance

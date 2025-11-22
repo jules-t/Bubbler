@@ -28,14 +28,14 @@ class ElevenLabsService:
 
             # Create a file-like object from bytes
             audio_file = io.BytesIO(audio_bytes)
-            audio_file.name = "audio.mp3"  # ElevenLabs needs a filename
 
-            # Use ElevenLabs speech-to-text
-            # Note: ElevenLabs STT API might differ - adjust based on their docs
-            # This is a placeholder for the actual implementation
-            result = self.client.speech_to_text.convert(audio=audio_file)
+            # Use ElevenLabs speech-to-text with correct API
+            result = self.client.speech_to_text.convert(
+                file=audio_file,
+                model_id="scribe_v1"  # ElevenLabs STT model
+            )
 
-            return result.text if hasattr(result, 'text') else str(result)
+            return result.text
 
         except Exception as e:
             raise Exception(f"Speech-to-text conversion failed: {str(e)}")

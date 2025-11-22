@@ -59,7 +59,7 @@ async def health_check():
 
         return HealthResponse(
             status="healthy" if all([openai_status, elevenlabs_status]) else "degraded",
-            agent_initialized=bubble_agent.is_initialized(),
+            agent_initialized=len(bubble_agent.get_all_bubble_ids()) > 0,
             services_available={
                 "openai": openai_status,
                 "elevenlabs": elevenlabs_status
@@ -72,26 +72,29 @@ async def health_check():
 @app.post("/api/initialize", response_model=BubbleState, tags=["Agent"])
 async def initialize_agent(request: InitializeRequest):
     """
-    Initialize the bubble agent with economic metrics.
-    This should be called by the data collection service when new metrics are available.
+    Initialize a bubble with economic metrics.
+
+    Use bubble_id to create different bubbles:
+    - "market" for the real market bubble (from data collection)
+    - "personal_{session_id}" for user-customized bubbles
     """
     try:
-        bubble_state = bubble_agent.initialize_with_metrics(request.metrics)
+        bubble_state = bubble_agent.initialize_with_metrics(request.bubble_id, request.metrics)
         return bubble_state
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to initialize agent: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to initialize bubble: {str(e)}")
 
 
-@app.get("/api/bubble-status", response_model=BubbleState, tags=["Agent"])
-async def get_bubble_status():
-    """Get current bubble risk level and personality state"""
-    if not bubble_agent.is_initialized():
+@app.get("/api/bubble-status/{bubble_id}", response_model=BubbleState, tags=["Agent"])
+async def get_bubble_status(bubble_id: str):
+    """Get risk level and personality state for a specific bubble"""
+    if not bubble_agent.is_bubble_initialized(bubble_id):
         raise HTTPException(
-            status_code=400,
-            detail="Agent not initialized. Please call /api/initialize first."
+            status_code=404,
+            detail=f"Bubble '{bubble_id}' not found. Please initialize it first with POST /api/initialize"
         )
 
-    state = bubble_agent.get_current_state()
+    state = bubble_agent.get_bubble_state(bubble_id)
     return state
 
 
@@ -108,11 +111,11 @@ async def voice_conversation(request: VoiceConversationRequest):
     5. Returns audio response + metadata
     """
     try:
-        # Check if agent is initialized
-        if not bubble_agent.is_initialized():
+        # Check if the specified bubble is initialized
+        if not bubble_agent.is_bubble_initialized(request.bubble_id):
             raise HTTPException(
-                status_code=400,
-                detail="Agent not initialized. Please call /api/initialize with metrics first."
+                status_code=404,
+                detail=f"Bubble '{request.bubble_id}' not found. Please initialize it first with POST /api/initialize"
             )
 
         # Step 1: Speech to Text
@@ -124,8 +127,8 @@ async def voice_conversation(request: VoiceConversationRequest):
                 detail=f"Speech-to-text failed: {str(e)}"
             )
 
-        # Step 2: Generate system prompt based on current bubble state
-        bubble_state = bubble_agent.get_current_state()
+        # Step 2: Generate system prompt based on the specific bubble's state
+        bubble_state = bubble_agent.get_bubble_state(request.bubble_id)
         system_prompt = PromptBuilder.build_system_prompt(bubble_state)
 
         # Step 3: Generate AI response
@@ -152,6 +155,7 @@ async def voice_conversation(request: VoiceConversationRequest):
 
         # Step 5: Return response
         return ConversationResponse(
+            bubble_id=request.bubble_id,
             audio_base64=response_audio,
             transcript_user=user_text,
             transcript_agent=agent_text,

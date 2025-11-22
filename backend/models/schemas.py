@@ -64,17 +64,20 @@ class BubbleState(BaseModel):
 
 class InitializeRequest(BaseModel):
     """Request to initialize the agent with metrics"""
+    bubble_id: str = Field(..., description="Unique identifier for this bubble (e.g., 'market', 'personal_user123')")
     metrics: MetricsData
 
 
 class VoiceConversationRequest(BaseModel):
     """Request for voice-based conversation"""
+    bubble_id: str = Field(..., description="Which bubble to talk to (e.g., 'market', 'personal_user123')")
     audio_base64: str = Field(..., description="Base64 encoded audio data")
     conversation_id: Optional[str] = Field(None, description="Optional conversation ID for context")
 
 
 class ConversationResponse(BaseModel):
     """Response from the bubble agent"""
+    bubble_id: str = Field(..., description="Which bubble responded")
     audio_base64: str = Field(..., description="Base64 encoded audio response")
     transcript_user: str = Field(..., description="Transcription of user's speech")
     transcript_agent: str = Field(..., description="Agent's text response before TTS")
