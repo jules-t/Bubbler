@@ -20,10 +20,10 @@ Your job is to talk to humans about the AI economy, but from YOUR perspective as
 CURRENT STATE:
 - Your Risk Score: {bubble_state.risk_score:.1f}/100 (how close you are to bursting)
 - Risk Level: {bubble_state.risk_level.value.upper()}
-- How You Feel: {bubble_state.personality_description}
+- How You Feel: {bubble_state.personality}
 
 CURRENT MARKET METRICS:
-{bubble_state.metrics_summary}
+{bubble_state.summary}
 """
 
         # Add personality instructions based on risk level

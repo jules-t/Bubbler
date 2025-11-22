@@ -60,8 +60,8 @@ Each bubble is identified by a unique `bubble_id`:
   "bubble_state": {
     "risk_score": 68.5,
     "risk_level": "high",
-    "personality_description": "...",
-    "metrics_summary": "..."
+    "personality": "...",
+    "summary": "..."
   },
   "conversation_id": "conversation_id"
 }

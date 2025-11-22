@@ -13,7 +13,7 @@ class Config:
     VLYU_API_KEY = os.getenv("VLYU_API_KEY")
 
     # OpenAI Settings
-    OPENAI_MODEL = "gpt-4"
+    OPENAI_MODEL = "gpt-4o-mini"
     OPENAI_TEMPERATURE = 0.8  # Higher temperature for more personality
     OPENAI_MAX_TOKENS = 500
 
