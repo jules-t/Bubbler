@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "last_updated": "2024-11-22",
+    "notes": "Hackathon baseline estimates; update with real history when available"
+  },
+  "valuation": {
+    "forward_pe_mean": {
+      "mean": 25.0,
+      "std": 5.0,
+      "percentiles": { "5": 15.0, "25": 20.0, "50": 25.0, "75": 30.0, "90": 35.0, "95": 38.0 },
+      "direction": "higher_is_riskier",
+      "available": true
+    }
+  },
+  "sentiment": {
+    "vader_compound_avg": {
+      "mean": 0.0,
+      "std": 0.2,
+      "percentiles": { "5": -0.4, "25": -0.1, "50": 0.0, "75": 0.2, "90": 0.4, "95": 0.6 },
+      "direction": "higher_is_riskier",
+      "available": true
+    }
+  },
+  "positioning": {
+    "equity_volatility_proxy": {
+      "mean": 0.02,
+      "std": 0.01,
+      "percentiles": { "5": 0.005, "25": 0.01, "50": 0.02, "75": 0.03, "90": 0.04, "95": 0.05 },
+      "direction": "higher_is_riskier",
+      "available": true
+    }
+  },
+  "liquidity": {
+    "US_10Y_real_yield": {
+      "mean": 0.5,
+      "std": 0.8,
+      "percentiles": { "5": -1.2, "25": -0.2, "50": 0.5, "75": 1.1, "90": 1.6, "95": 2.0 },
+      "direction": "higher_is_riskier",
+      "available": true
+    },
+    "US_M2_YoY_growth": {
+      "mean": 6.5,
+      "std": 4.2,
+      "percentiles": { "5": -1.0, "25": 3.5, "50": 6.0, "75": 9.0, "90": 12.0, "95": 15.0 },
+      "direction": "lower_is_riskier",
+      "available": true
+    },
+    "US_HY_credit_spread": {
+      "mean": 400.0,
+      "std": 150.0,
+      "percentiles": { "5": 250.0, "25": 320.0, "50": 380.0, "75": 450.0, "90": 550.0, "95": 650.0 },
+      "direction": "higher_is_riskier",
+      "available": true
+    }
+  },
+  "capex": {
+    "capex_proxy": {
+      "mean": 0.35,
+      "std": 0.12,
+      "percentiles": { "5": 0.18, "25": 0.27, "50": 0.34, "75": 0.42, "90": 0.52, "95": 0.58 },
+      "direction": "higher_is_riskier",
+      "available": false
+    }
+  }
+}

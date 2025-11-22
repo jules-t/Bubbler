@@ -1,0 +1,35 @@
+{
+  "bubble_id": "market",
+  "metrics": {
+    "category_1_valuation": {
+      "pe_ratio": 63.800000000000004,
+      "revenue_multiple": 50.0,
+      "market_cap_gdp": 50.0,
+      "growth_premium": 50.0
+    },
+    "category_2_sentiment": {
+      "media_mentions": 50.0,
+      "social_sentiment": 76.39254,
+      "search_trends": 22.651785714285715,
+      "analyst_ratings": 50.0
+    },
+    "category_3_positioning": {
+      "fund_flows": 50.0,
+      "institutional_holdings": 50.0,
+      "retail_interest": 22.97589285714286,
+      "options_volume": 50.0
+    },
+    "category_4_macro": {
+      "interest_rates": 75.5,
+      "liquidity": 57.1695284017406,
+      "vix": 50.0,
+      "put_call_ratio": 50.0
+    },
+    "category_5_fundamentals": {
+      "revenue_growth": 50.0,
+      "profit_margins": 50.0,
+      "capex_cycle": 35.670033333333336,
+      "adoption_rate": 50.0
+    }
+  }
+}

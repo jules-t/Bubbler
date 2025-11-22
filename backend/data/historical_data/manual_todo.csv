@@ -1,0 +1,8 @@
+metric,status,note
+fear_greed_index,manual/premium,No official free API; scrape CNN or enter manually.
+put_call_ratio_nvda,manual/premium,Options data; CBOE/premium feeds.
+short_interest_nvda,manual/premium,FINRA/Nasdaq short interest; manual entry.
+iv_rv_ratio_nvda,manual/premium,Options vol data; premium.
+gpu_shipment_growth,manual,"Industry reports (e.g., JPR)"
+ai_capex_to_ocf,manual,Compute from filings (MSFT/GOOGL/AMZN/META/AVGO/NVDA)
+ai_revenue_yoy,manual,Segment disclosures from earnings.

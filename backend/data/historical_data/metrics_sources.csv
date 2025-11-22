@@ -1,0 +1,22 @@
+metric,description,source,access,identifier_or_endpoint,notes
+QQQ_forward_pe,NASDAQ-100 forward P/E,Yahoo Finance,yfinance ticker,QQQ,Use yfinance.Ticker("QQQ").info['forwardPE'] or valuation measures; history via download/compute.
+BOTZ_pe,AI/thematic ETF P/E,Yahoo Finance,yfinance ticker,BOTZ,PE fields often present in .info; if null fallback to price/earnings from financials or manual.
+IRBO_pe,AI/thematic ETF P/E,Yahoo Finance,yfinance ticker,IRBO,Same as BOTZ.
+NVDA_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,NVDA,Use .info['forwardPE']; similar for MSFT/AMZN/GOOGL/META/AMD/AVGO.
+MSFT_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,MSFT,
+AMZN_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,AMZN,
+GOOGL_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,GOOGL,
+META_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,META,
+AMD_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,AMD,
+AVGO_forward_pe,Major AI equity forward P/E,Yahoo Finance,yfinance ticker,AVGO,
+DFII10,US 10Y real yield,FRED,API,FRED series DFII10,free key required.
+M2_YoY,US M2 YoY growth (compute),FRED,API,FRED series M2SL,compute pct_change(periods=12)*100.
+BAMLH0A0HYM2,US HY credit spread (OAS),FRED,API,FRED series BAMLH0A0HYM2,
+google_trends_ai,Google Trends interest AI terms,Google Trends,pytrends keywords,"ChatGPT,OpenAI,AI stocks,AI bubble",Use pytrends.interest_over_time().
+fear_greed_index,Fear & Greed Index,Manual/Unofficial,web scrape/manual,,No official free API; needs manual fetch from CNN or mirrors.
+NVDA_put_call_ratio,Put/Call ratio NVDA,Options data,manual/premium,,CBOE/paid APIs; record manually if available.
+NVDA_short_interest,Short interest % float NVDA,FINRA/Nasdaq,manual/premium,,Check Nasdaq/FINRA short interest pages; manual entry.
+NVDA_IV_RV_ratio,Implied/Realized vol ratio NVDA,Options data,manual/premium,,From options data providers; manual if needed.
+gpu_shipment_growth,GPU shipment YoY,Industry reports,manual,,Use market research reports (e.g., JPR); manual entry.
+ai_capex_to_ocf,AI capex / operating cash flow,Company filings,manual,,Compute from earnings/cash flow statements (MSFT/AMZN/GOOGL/META/NVDA).
+ai_revenue_yoy,AI-related revenue YoY,Company filings,manual,,Use segment disclosures/earnings; manual entry.
