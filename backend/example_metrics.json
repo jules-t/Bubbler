@@ -1,0 +1,29 @@
+{
+  "metrics": {
+    "category1_valuation": {
+      "nasdaq_100_forward_pe": 28.5,
+      "nasdaq_100_10y_avg_pe": 22.0,
+      "ai_etf_avg_pe": 42.3
+    },
+    "category2_sentiment": {
+      "cnn_fear_greed_index": 82,
+      "social_bubble_mentions": 650
+    },
+    "category3_options_flow": {
+      "nvda_put_call_ratio": 0.45,
+      "ai_etf_weekly_flows": -1200.0,
+      "avg_short_interest": 5.2,
+      "nvda_iv_rv_ratio": 1.8
+    },
+    "category4_macro": {
+      "us_10y_real_yield": 2.5,
+      "m2_yoy_growth": 2.1,
+      "us_hy_credit_spread": 425
+    },
+    "category5_fundamentals": {
+      "gpu_shipment_growth": 28.5,
+      "ai_capex_burden": 1.2,
+      "enterprise_ai_adoption": 42.0
+    }
+  }
+}
