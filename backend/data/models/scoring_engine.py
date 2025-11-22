@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 
-DATA_PATH = Path(__file__).resolve().parent / "outputs" / "bubble_data.json"
+DATA_PATH = Path(__file__).resolve().parent.parent / "outputs" / "bubble_data.json"
 DEFAULT_DUCKDB = Path(__file__).resolve().parent / "db" / "redit_pipeline.duckdb"
 
 

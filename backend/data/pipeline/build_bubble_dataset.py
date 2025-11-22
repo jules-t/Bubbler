@@ -27,8 +27,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_DB = Path(os.getenv("DUCKDB_PATH", BASE_DIR / "db" / "redit_pipeline.duckdb"))
-OUTPUT_JSON = BASE_DIR / "outputs" / "bubble_data.json"
+DEFAULT_DB = Path(os.getenv("DUCKDB_PATH", BASE_DIR.parent / "db" / "redit_pipeline.duckdb"))
+OUTPUT_JSON = BASE_DIR.parent / "outputs" / "bubble_data.json"
 analyzer = SentimentIntensityAnalyzer()
 
 

@@ -280,7 +280,7 @@ def _safe_float(val):
 def run_all() -> None:
     """Run all resources into a single DuckDB-backed dlt pipeline."""
 
-    db_dir = Path(__file__).resolve().parent / "db"
+    db_dir = Path(__file__).resolve().parents[1] / "db"
     db_dir.mkdir(parents=True, exist_ok=True)
     db_path = db_dir / "redit_pipeline.duckdb"
 
