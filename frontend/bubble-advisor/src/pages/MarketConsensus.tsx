@@ -8,12 +8,17 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useVoiceAgent } from "@/hooks/useVoiceAgent";
+import { useBubbleState, useInitializeBubbleFromCategories } from "@/hooks/useBubbleState";
 
 const MarketConsensus = () => {
   const navigate = useNavigate();
   const [categories] = useState<Category[]>(CATEGORIES);
   const [marketScore, setMarketScore] = useState(0);
-  const { isListening, isProcessing, startRecording, stopRecording } = useVoiceAgent();
+
+  const BUBBLE_ID = "market_consensus";
+  const { data: bubbleState } = useBubbleState(BUBBLE_ID);
+  const { initializeFromCategories } = useInitializeBubbleFromCategories();
+  const { isListening, isProcessing, startRecording, stopRecording } = useVoiceAgent(BUBBLE_ID);
 
   const calculateScore = (cats: Category[]) => {
     let totalScore = 0;
@@ -32,8 +37,12 @@ const MarketConsensus = () => {
   };
 
   useEffect(() => {
-    setMarketScore(calculateScore(categories));
-  }, [categories]);
+    const score = calculateScore(categories);
+    setMarketScore(score);
+
+    // Initialize bubble with market consensus data (using market weights and values)
+    initializeFromCategories(BUBBLE_ID, categories, false); // false = use market values
+  }, [categories, initializeFromCategories, BUBBLE_ID]);
 
   return (
     <div className="min-h-screen bg-background dark">

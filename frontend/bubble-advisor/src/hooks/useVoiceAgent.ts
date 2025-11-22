@@ -105,9 +105,24 @@ export const useVoiceAgent = (bubbleId: string) => {
             resolve(response);
           } catch (error) {
             console.error('Error processing audio:', error);
+
+            // Better error message extraction
+            let errorMessage = "Failed to process your voice input";
+
+            if (error instanceof Error) {
+              errorMessage = error.message;
+            } else if (typeof error === 'object' && error !== null) {
+              // Handle various error object structures
+              errorMessage = (error as any).detail ||
+                             (error as any).message ||
+                             JSON.stringify(error);
+            } else if (typeof error === 'string') {
+              errorMessage = error;
+            }
+
             toast({
               title: "Processing Error",
-              description: error instanceof Error ? error.message : "Failed to process your voice input",
+              description: errorMessage,
               variant: "destructive",
             });
             setIsProcessing(false);
@@ -117,6 +132,26 @@ export const useVoiceAgent = (bubbleId: string) => {
       });
     } catch (error) {
       console.error('Error in processAudio:', error);
+
+      // Better error message extraction
+      let errorMessage = "Failed to process your voice input";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        errorMessage = (error as any).detail ||
+                       (error as any).message ||
+                       JSON.stringify(error);
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
+      toast({
+        title: "Processing Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+
       setIsProcessing(false);
       throw error;
     }
