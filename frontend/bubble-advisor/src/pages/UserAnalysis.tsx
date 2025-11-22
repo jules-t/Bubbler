@@ -24,19 +24,17 @@ const UserAnalysis = () => {
 
   const calculateScore = (cats: Category[]) => {
     let totalScore = 0;
-    let totalWeight = 0;
-    
+
     cats.forEach(category => {
-      const categoryScore = category.userCategoryScore ?? category.indexes.reduce((sum, index) => {
+      const categoryScore = category.indexes.reduce((sum, index) => {
         const indexValue = index.userValue !== undefined ? index.userValue : index.value;
         return sum + indexValue;
       }, 0) / category.indexes.length;
-      
-      totalScore += categoryScore * category.userWeight;
-      totalWeight += category.userWeight;
+
+      totalScore += categoryScore * (category.userWeight / 100);
     });
-    
-    return totalWeight > 0 ? Math.min(100, totalScore / totalWeight) : 0;
+
+    return Math.min(100, totalScore / cats.length);
   };
 
   useEffect(() => {
@@ -84,21 +82,12 @@ const UserAnalysis = () => {
     );
   };
 
-  const handleCategoryScoreChange = (categoryId: string, score: number) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === categoryId ? { ...cat, userCategoryScore: score } : cat
-      )
-    );
-  };
-
   const handleIndexValueChange = (categoryId: string, indexId: string, value: number) => {
     setCategories((prev) =>
       prev.map((cat) => {
         if (cat.id === categoryId) {
           return {
             ...cat,
-            userCategoryScore: undefined, // Advanced mode overrides normal mode
             indexes: cat.indexes.map(idx =>
               idx.id === indexId ? { ...idx, userValue: value } : idx
             ),
@@ -114,7 +103,6 @@ const UserAnalysis = () => {
       CATEGORIES.map((cat) => ({
         ...cat,
         userWeight: cat.marketWeight,
-        userCategoryScore: undefined,
         indexes: cat.indexes.map(idx => ({ ...idx, userValue: undefined }))
       }))
     );
@@ -198,7 +186,6 @@ const UserAnalysis = () => {
           <CategoryControls
             categories={categories}
             onCategoryWeightChange={handleCategoryWeightChange}
-            onCategoryScoreChange={handleCategoryScoreChange}
             onIndexValueChange={handleIndexValueChange}
             onReset={handleReset}
           />

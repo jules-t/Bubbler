@@ -118,7 +118,6 @@ export interface Category {
   indexes: Index[];
   userWeight: number;
   marketWeight: number;
-  userCategoryScore?: number;
   explanation: string;
 }
 

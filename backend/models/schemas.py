@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from enum import Enum
 
 
@@ -65,6 +65,9 @@ class BubbleState(BaseModel):
     risk_level: BubbleRiskLevel
     personality: str = Field(..., description="Personality description")
     summary: str = Field(..., description="Metrics summary")
+    confidence: Optional[float] = Field(None, ge=0, le=1, description="Confidence score for the risk assessment (0-1)")
+    warning_signals: Optional[List[str]] = Field(None, description="Critical warning signals from market analysis")
+    historical_comparison: Optional[Dict[str, Any]] = Field(None, description="Comparison to historical bubbles (dotcom, crypto, housing)")
 
 
 class InitializeRequest(BaseModel):

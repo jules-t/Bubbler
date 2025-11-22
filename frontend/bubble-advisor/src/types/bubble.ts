@@ -15,7 +15,6 @@ export interface Category {
   indexes: Index[];
   userWeight: number; // User's custom weight 0-100
   marketWeight: number; // Market consensus weight 0-100
-  userCategoryScore?: number; // User's direct category score in normal mode (0-100)
   explanation: string; // What this category means and current market implications
 }
 
