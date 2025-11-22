@@ -22,7 +22,7 @@ class Config:
     ELEVENLABS_MODEL_ID = "eleven_multilingual_v2"
 
     # Application Settings
-    CORS_ORIGINS = ["*"]  # Update this in production to specific frontend URL
+    CORS_ORIGINS = ["http://localhost:8080"]  # Frontend dev server
     DEBUG = True
 
     @classmethod

@@ -11,55 +11,60 @@ class BubbleRiskLevel(str, Enum):
 
 
 class MetricsCategory1(BaseModel):
-    """Valuation Metrics"""
-    nasdaq_100_forward_pe: float = Field(..., description="NASDAQ-100 forward P/E ratio")
-    nasdaq_100_10y_avg_pe: float = Field(..., description="NASDAQ-100 10-year average P/E")
-    ai_etf_avg_pe: float = Field(..., description="AI ETF (e.g. BOTZ) average P/E")
+    """Valuation Metrics - accepts any numeric values 0-100"""
+    pe_ratio: float = Field(..., ge=0, le=100, description="P/E ratio metric")
+    revenue_multiple: float = Field(..., ge=0, le=100, description="Revenue multiple metric")
+    market_cap_gdp: float = Field(..., ge=0, le=100, description="Market cap to GDP metric")
+    growth_premium: float = Field(..., ge=0, le=100, description="Growth premium metric")
 
 
 class MetricsCategory2(BaseModel):
-    """Sentiment Metrics"""
-    cnn_fear_greed_index: float = Field(..., ge=0, le=100, description="CNN Fear & Greed Index (0-100)")
-    social_bubble_mentions: int = Field(..., description="Reddit/Discord AI-ticker + Bubble mentions per day")
+    """Sentiment Metrics - accepts any numeric values 0-100"""
+    media_mentions: float = Field(..., ge=0, le=100, description="Media mentions metric")
+    social_sentiment: float = Field(..., ge=0, le=100, description="Social sentiment metric")
+    search_trends: float = Field(..., ge=0, le=100, description="Search trends metric")
+    analyst_ratings: float = Field(..., ge=0, le=100, description="Analyst ratings metric")
 
 
 class MetricsCategory3(BaseModel):
-    """Options & Flow Metrics"""
-    nvda_put_call_ratio: float = Field(..., description="Put/Call ratio for NVDA")
-    ai_etf_weekly_flows: float = Field(..., description="Weekly net flows into AI/thematic ETFs (millions)")
-    avg_short_interest: float = Field(..., ge=0, le=100, description="Average short interest % of float (NVDA/SMCI)")
-    nvda_iv_rv_ratio: float = Field(..., description="Implied volatility / Realized volatility ratio for NVDA")
+    """Positioning & Flow Metrics - accepts any numeric values 0-100"""
+    fund_flows: float = Field(..., ge=0, le=100, description="Fund flows metric")
+    institutional_holdings: float = Field(..., ge=0, le=100, description="Institutional holdings metric")
+    retail_interest: float = Field(..., ge=0, le=100, description="Retail interest metric")
+    options_volume: float = Field(..., ge=0, le=100, description="Options volume metric")
 
 
 class MetricsCategory4(BaseModel):
-    """Macro & Liquidity Metrics"""
-    us_10y_real_yield: float = Field(..., description="US 10Y real yield (TIPS) in %")
-    m2_yoy_growth: float = Field(..., description="Global/US M2 YoY growth %")
-    us_hy_credit_spread: float = Field(..., description="US HY credit spread (OAS) in basis points")
+    """Macro & Liquidity Metrics - accepts any numeric values 0-100"""
+    interest_rates: float = Field(..., ge=0, le=100, description="Interest rates metric")
+    liquidity: float = Field(..., ge=0, le=100, description="Liquidity metric")
+    vix: float = Field(..., ge=0, le=100, description="VIX fear index metric")
+    put_call_ratio: float = Field(..., ge=0, le=100, description="Put/Call ratio metric")
 
 
 class MetricsCategory5(BaseModel):
-    """Fundamental AI Metrics"""
-    gpu_shipment_growth: float = Field(..., description="GPU Shipment Growth YoY %")
-    ai_capex_burden: float = Field(..., description="AI Capex / OCF ratio")
-    enterprise_ai_adoption: float = Field(..., ge=0, le=100, description="Enterprise AI Adoption Rate %")
+    """Fundamental AI Metrics - accepts any numeric values 0-100"""
+    revenue_growth: float = Field(..., ge=0, le=100, description="Revenue growth metric")
+    profit_margins: float = Field(..., ge=0, le=100, description="Profit margins metric")
+    capex_cycle: float = Field(..., ge=0, le=100, description="CapEx cycle metric")
+    adoption_rate: float = Field(..., ge=0, le=100, description="Adoption rate metric")
 
 
 class MetricsData(BaseModel):
     """Complete set of metrics for bubble risk assessment"""
-    category1_valuation: MetricsCategory1
-    category2_sentiment: MetricsCategory2
-    category3_options_flow: MetricsCategory3
-    category4_macro: MetricsCategory4
-    category5_fundamentals: MetricsCategory5
+    category_1_valuation: MetricsCategory1
+    category_2_sentiment: MetricsCategory2
+    category_3_positioning: MetricsCategory3
+    category_4_macro: MetricsCategory4
+    category_5_fundamentals: MetricsCategory5
 
 
 class BubbleState(BaseModel):
     """Current state of the bubble agent"""
     risk_score: float = Field(..., ge=0, le=100, description="Risk score from 0 (safe) to 100 (about to pop)")
     risk_level: BubbleRiskLevel
-    personality_description: str
-    metrics_summary: str
+    personality: str = Field(..., description="Personality description")
+    summary: str = Field(..., description="Metrics summary")
 
 
 class InitializeRequest(BaseModel):
@@ -77,12 +82,11 @@ class VoiceConversationRequest(BaseModel):
 
 class ConversationResponse(BaseModel):
     """Response from the bubble agent"""
-    bubble_id: str = Field(..., description="Which bubble responded")
-    audio_base64: str = Field(..., description="Base64 encoded audio response")
-    transcript_user: str = Field(..., description="Transcription of user's speech")
-    transcript_agent: str = Field(..., description="Agent's text response before TTS")
-    bubble_state: BubbleState
     conversation_id: str
+    user_transcript: str = Field(..., description="Transcription of user's speech")
+    bubble_response: str = Field(..., description="Agent's text response before TTS")
+    audio_base64: str = Field(..., description="Base64 encoded audio response")
+    bubble_state: BubbleState
 
 
 class HealthResponse(BaseModel):

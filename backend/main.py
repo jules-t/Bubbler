@@ -155,12 +155,11 @@ async def voice_conversation(request: VoiceConversationRequest):
 
         # Step 5: Return response
         return ConversationResponse(
-            bubble_id=request.bubble_id,
+            conversation_id=conversation_id,
+            user_transcript=user_text,
+            bubble_response=agent_text,
             audio_base64=response_audio,
-            transcript_user=user_text,
-            transcript_agent=agent_text,
-            bubble_state=bubble_state,
-            conversation_id=conversation_id
+            bubble_state=bubble_state
         )
 
     except HTTPException:

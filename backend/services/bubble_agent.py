@@ -20,8 +20,8 @@ class BubbleAgent:
         bubble_state = BubbleState(
             risk_score=risk_score,
             risk_level=risk_level,
-            personality_description=personality,
-            metrics_summary=summary
+            personality=personality,
+            summary=summary
         )
 
         # Store this bubble's data
@@ -36,49 +36,43 @@ class BubbleAgent:
         """
         Calculate overall bubble risk score (0-100) based on all metrics.
         Higher score = higher risk of bubble bursting.
+        All input metrics are normalized 0-100 values.
         """
+        # Category weights
+        weights = {
+            'valuation': 0.20,
+            'sentiment': 0.15,
+            'positioning': 0.25,
+            'macro': 0.20,
+            'fundamentals': 0.20
+        }
+
         score = 0.0
 
         # Category 1: Valuation (20% weight)
-        # High P/E ratios compared to historical average = higher risk
-        cat1 = metrics.category1_valuation
-        pe_deviation = (cat1.nasdaq_100_forward_pe / cat1.nasdaq_100_10y_avg_pe - 1) * 100
-        valuation_risk = min(max((pe_deviation + cat1.ai_etf_avg_pe / 5), 0), 20)
-        score += valuation_risk
+        cat1 = metrics.category_1_valuation
+        valuation_avg = (cat1.pe_ratio + cat1.revenue_multiple + cat1.market_cap_gdp + cat1.growth_premium) / 4
+        score += valuation_avg * weights['valuation']
 
         # Category 2: Sentiment (15% weight)
-        # High greed and high social mentions = higher risk
-        cat2 = metrics.category2_sentiment
-        sentiment_risk = (cat2.cnn_fear_greed_index / 100 * 10) + min(cat2.social_bubble_mentions / 100, 5)
-        score += min(sentiment_risk, 15)
+        cat2 = metrics.category_2_sentiment
+        sentiment_avg = (cat2.media_mentions + cat2.social_sentiment + cat2.search_trends + cat2.analyst_ratings) / 4
+        score += sentiment_avg * weights['sentiment']
 
-        # Category 3: Options & Flow (25% weight)
-        # Low put/call (complacency), high outflows, low short interest = higher risk
-        cat3 = metrics.category3_options_flow
-        put_call_signal = max(10 - cat3.nvda_put_call_ratio * 10, 0)  # Low put/call = higher risk
-        flow_signal = max(-cat3.ai_etf_weekly_flows / 1000, 0)  # Outflows = risk
-        short_signal = max(5 - cat3.avg_short_interest / 4, 0)  # Low short interest = complacency
-        iv_signal = max((cat3.nvda_iv_rv_ratio - 1) * 5, 0)  # High IV/RV = nervousness
-        options_risk = min(put_call_signal + flow_signal + short_signal + iv_signal, 25)
-        score += options_risk
+        # Category 3: Positioning & Flow (25% weight)
+        cat3 = metrics.category_3_positioning
+        positioning_avg = (cat3.fund_flows + cat3.institutional_holdings + cat3.retail_interest + cat3.options_volume) / 4
+        score += positioning_avg * weights['positioning']
 
-        # Category 4: Macro (20% weight)
-        # High real yields, low M2 growth, high credit spreads = tighter conditions = higher risk
-        cat4 = metrics.category4_macro
-        yield_risk = max(cat4.us_10y_real_yield * 2, 0)
-        m2_risk = max(5 - cat4.m2_yoy_growth / 2, 0)  # Low M2 growth = less liquidity
-        credit_risk = max(cat4.us_hy_credit_spread / 50, 0)
-        macro_risk = min(yield_risk + m2_risk + credit_risk, 20)
-        score += macro_risk
+        # Category 4: Macro & Liquidity (20% weight)
+        cat4 = metrics.category_4_macro
+        macro_avg = (cat4.interest_rates + cat4.liquidity + cat4.vix + cat4.put_call_ratio) / 4
+        score += macro_avg * weights['macro']
 
         # Category 5: Fundamentals (20% weight)
-        # Slowing GPU growth, high capex burden, low adoption = weaker fundamentals
-        cat5 = metrics.category5_fundamentals
-        gpu_risk = max(10 - cat5.gpu_shipment_growth / 10, 0)
-        capex_risk = max(cat5.ai_capex_burden * 3, 0)
-        adoption_risk = max((100 - cat5.enterprise_ai_adoption) / 10, 0)
-        fundamental_risk = min(gpu_risk + capex_risk + adoption_risk, 20)
-        score += fundamental_risk
+        cat5 = metrics.category_5_fundamentals
+        fundamentals_avg = (cat5.revenue_growth + cat5.profit_margins + cat5.capex_cycle + cat5.adoption_rate) / 4
+        score += fundamentals_avg * weights['fundamentals']
 
         # Normalize to 0-100 range
         return min(max(score, 0), 100)
@@ -112,17 +106,18 @@ class BubbleAgent:
 
     def _generate_metrics_summary(self, metrics: MetricsData) -> str:
         """Generate human-readable summary of key metrics"""
-        cat1 = metrics.category1_valuation
-        cat2 = metrics.category2_sentiment
-        cat5 = metrics.category5_fundamentals
+        cat1 = metrics.category_1_valuation
+        cat2 = metrics.category_2_sentiment
+        cat5 = metrics.category_5_fundamentals
+
+        valuation_avg = (cat1.pe_ratio + cat1.revenue_multiple + cat1.market_cap_gdp + cat1.growth_premium) / 4
+        sentiment_avg = (cat2.media_mentions + cat2.social_sentiment + cat2.search_trends + cat2.analyst_ratings) / 4
+        fundamentals_avg = (cat5.revenue_growth + cat5.profit_margins + cat5.capex_cycle + cat5.adoption_rate) / 4
 
         return (
-            f"Valuation: NASDAQ-100 P/E {cat1.nasdaq_100_forward_pe:.1f} "
-            f"(10Y avg: {cat1.nasdaq_100_10y_avg_pe:.1f}), AI ETF P/E {cat1.ai_etf_avg_pe:.1f}. "
-            f"Sentiment: Fear/Greed {cat2.cnn_fear_greed_index:.0f}, "
-            f"Social mentions {cat2.social_bubble_mentions}/day. "
-            f"Fundamentals: GPU growth {cat5.gpu_shipment_growth:.1f}%, "
-            f"Enterprise adoption {cat5.enterprise_ai_adoption:.1f}%."
+            f"Valuation indicators at {valuation_avg:.1f}/100. "
+            f"Market sentiment at {sentiment_avg:.1f}/100. "
+            f"Fundamental strength at {fundamentals_avg:.1f}/100."
         )
 
     def get_bubble_state(self, bubble_id: str) -> BubbleState | None:
