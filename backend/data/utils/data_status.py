@@ -9,7 +9,7 @@ from typing import Dict, List
 
 import duckdb
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DB_PATH = BASE_DIR / "db" / "redit_pipeline.duckdb"
 BUBBLE_JSON = BASE_DIR / "outputs" / "bubble_data.json"
 

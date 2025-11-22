@@ -535,7 +535,7 @@ def _main() -> None:
     print("\nWarnings:")
     for warning in result["warning_signals"]:
         print(f"  - {warning}")
-    output_path = Path(__file__).resolve().parent / "outputs" / "bubble_score_output.json"
+    output_path = Path(__file__).resolve().parent.parent / "outputs" / "bubble_score_output.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2))
     print(f"\nSaved to {output_path}")

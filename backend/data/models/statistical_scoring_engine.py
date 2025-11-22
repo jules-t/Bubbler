@@ -29,9 +29,9 @@ from scipy import stats
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_DB = BASE_DIR / "db" / "redit_pipeline.duckdb"
-BASELINES_PATH = BASE_DIR / "historical_data" / "historical_baselines.json"
-OUTPUT_PATH = BASE_DIR / "outputs" / "bubble_score_statistical.json"
+DEFAULT_DB = BASE_DIR.parent / "db" / "redit_pipeline.duckdb"
+BASELINES_PATH = BASE_DIR.parent / "historical_data" / "historical_baselines.json"
+OUTPUT_PATH = BASE_DIR.parent / "outputs" / "bubble_score_statistical.json"
 
 
 @dataclass
@@ -59,7 +59,7 @@ class StatisticalScoringEngine:
             "capex": 0.20,
         }
         # Load bubble_data.json for VADER sentiment aggregation
-        self.bubble_data_path = BASE_DIR / "outputs" / "bubble_data.json"
+        self.bubble_data_path = BASE_DIR.parent / "outputs" / "bubble_data.json"
         self.bubble_data = []
         if self.bubble_data_path.exists():
             try:

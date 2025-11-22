@@ -8,7 +8,7 @@ from pathlib import Path
 from scoring_engine import calculate_bubble_score
 
 
-DATA_PATH = Path(__file__).resolve().parent / "outputs" / "bubble_data.json"
+DATA_PATH = Path(__file__).resolve().parent.parent / "outputs" / "bubble_data.json"
 
 
 def get_bubble_analysis():
